@@ -1,7 +1,26 @@
 const path = require("path");
 const fs = require("fs");
+const fse = require("fs-extra");
 const { mergChunks } = require("../utils/mergeChunks");
 
+// 文件检验接口
+exports.handleVerify = (req, res) => {
+  const { fileName, fileHash } = req.body;
+  const tempFileHash = path.resolve("uploadsFiles", fileHash);
+  const tempFileName = path.resolve("uploadsFiles", fileName);
+  if (fs.existsSync(tempFileName)) {
+    res.send({ code: 201, msg: "该文件已上传", data: [] });
+    return;
+  }
+  // 如果有hash文件夹判断已上传了多少片，没有就返回没有全部上传
+  if (fs.existsSync(tempFileHash)) {
+    const chunkPaths = fse.readdirSync(tempFileHash);
+    res.send({ code: 206, msg: "该文件还剩部分分片未上传", data: chunkPaths });
+  } else {
+    res.send({ code: 404, msg: "该文件还未上传", data: [] });
+  }
+};
+// 文件上传接口
 exports.handleUpload = (req, res) => {
   const { fileHash, chunkIndex } = req.body;
   // 根据hash值创建文件夹
@@ -16,12 +35,15 @@ exports.handleUpload = (req, res) => {
       console.log("走这里了");
       fs.mkdirSync(dirPath, { recursive: true });
     }
+    console.log("chunkPath", chunkPath);
+
     // 判断是否有切片文件
     if (!fs.existsSync(chunkPath)) {
       fs.renameSync(tempPath, chunkPath); //移动临时文件到目标目录
-    } else {
-      fs.unlinkSync(tempPath); //删除临时文件
     }
+    // else {
+    //   fs.unlinkSync(tempPath); //删除临时文件
+    // }
     res.send({
       code: 200,
       msg: "Success",
@@ -31,7 +53,7 @@ exports.handleUpload = (req, res) => {
     console.log("err", error);
   }
 };
-
+// 文件合并接口
 exports.handleMerge = async (req, res) => {
   const { chunkHash, fileName, chunksNumber } = req.body;
   const dirPath = path.resolve("uploadsFiles", chunkHash); //目标目录

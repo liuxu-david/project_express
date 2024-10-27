@@ -1,7 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require("multer");
-const { handleUpload, handleMerge } = require("./api_handle/upload");
+const {
+  handleVerify,
+  handleUpload,
+  handleMerge,
+} = require("./api_handle/upload");
 
 const app = express();
 const upload = multer({ dest: "./uploadsFiles" }); //设置存放目录
@@ -12,6 +16,8 @@ app.use(bodyParser.urlencoded({ extended: false })); //解析 URL-encoded 格式
 app.get("/", function (req, res) {
   res.send("hello");
 });
+
+app.post("/verify", handleVerify);
 app.post("/upload", upload.single("file"), handleUpload);
 app.post("/merge", handleMerge);
 
