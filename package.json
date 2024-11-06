@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./index.js --watch",
+    "start": "cross-env NODE_ENV=development nodemon ./index.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "cross-env": "^7.0.3",
     "express": "^4.21.1",
     "fs-extra": "^11.2.0",
     "multer": "^1.4.5-lts.1"

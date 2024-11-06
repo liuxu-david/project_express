@@ -6,6 +6,8 @@ const {
   handleUpload,
   handleMerge,
 } = require("./api_handle/upload");
+const devConfig = require("./env.development");
+const prodConfig = require("./env.production.config");
 
 const app = express();
 const upload = multer({ dest: "./uploadsFiles" }); //设置存放目录
@@ -20,6 +22,12 @@ app.get("/", function (req, res) {
 app.post("/verify", handleVerify);
 app.post("/upload", upload.single("file"), handleUpload);
 app.post("/merge", handleMerge);
+
+if (process.env.NODE_ENV === "development") {
+  console.log(process.env.NODE_ENV, devConfig.name);
+} else {
+  console.log(process.env.NODE_ENV, prodConfig.name);
+}
 
 const port = 5000;
 app.listen(port, () => {
