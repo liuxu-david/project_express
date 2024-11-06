@@ -5,9 +5,9 @@ const {
   handleVerify,
   handleUpload,
   handleMerge,
-} = require("./api_handle/upload");
-const devConfig = require("./env.development");
-const prodConfig = require("./env.production.config");
+} = require("./src/services/upload");
+const devConfig = require("./src/config/env.development");
+const prodConfig = require("./src/config/env.production");
 
 const app = express();
 const upload = multer({ dest: "./uploadsFiles" }); //设置存放目录
