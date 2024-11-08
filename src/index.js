@@ -1,27 +1,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const multer = require("multer");
-const {
-  handleVerify,
-  handleUpload,
-  handleMerge,
-} = require("./src/services/upload");
-const devConfig = require("./src/config/env.development");
-const prodConfig = require("./src/config/env.production");
+const devConfig = require("./config/env.development");
+const prodConfig = require("./config/env.production");
+const uploadRoutes = require("./routes/uploadRoutes");
 
 const app = express();
-const upload = multer({ dest: "./uploadsFiles" }); //设置存放目录
-
 app.use(bodyParser.json()); // 解析 JSON 格式的请求体
 app.use(bodyParser.urlencoded({ extended: false })); //解析 URL-encoded 格式的请求体
 
-app.get("/", function (req, res) {
+app.get("/api", (req, res) => {
   res.send("hello");
 });
-
-app.post("/verify", handleVerify);
-app.post("/upload", upload.single("file"), handleUpload);
-app.post("/merge", handleMerge);
+app.use("/api/upload", uploadRoutes);
 
 if (process.env.NODE_ENV === "development") {
   console.log(process.env.NODE_ENV, devConfig.name);
