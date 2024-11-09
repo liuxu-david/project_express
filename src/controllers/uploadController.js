@@ -1,9 +1,15 @@
 const uploadService = require("../services/uploadService");
+
+// 处理检查分片
 exports.handleVerify = async (req, res) => {
   const { fileName, fileHash } = req.body;
   const result = await uploadService.verifyFile(fileName, fileHash);
-  res.status(result.code).send(result);
+  console.log(result);
+
+  res.send(result);
 };
+
+// 处理上传
 exports.handleUpload = async (req, res) => {
   const { fileHash, chunkIndex } = req.body;
   const tempPath = req.file.path; //临时文件路径
@@ -12,9 +18,10 @@ exports.handleUpload = async (req, res) => {
     chunkIndex,
     tempPath
   );
-  res.status(result.code).send(result);
+  res.send(result);
 };
 
+// 处理合并
 exports.handleMerge = async (req, res) => {
   const { chunkHash, fileName, chunksNumber } = req.body;
   const result = await uploadService.mergeChunks(
@@ -22,5 +29,5 @@ exports.handleMerge = async (req, res) => {
     fileName,
     chunksNumber
   );
-  res.status(result.code).send(result);
+  res.send(result);
 };

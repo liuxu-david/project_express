@@ -3,7 +3,7 @@ const fs = require("fs");
 const fse = require("fs-extra");
 const { mergChunks } = require("../utils/mergeChunks");
 
-// 文件检验接口
+// 文件检验处理
 exports.verifyFile = async (fileName, fileHash) => {
   const tempFileHash = path.resolve("uploadsFiles", fileHash);
   const tempFileName = path.resolve("uploadsFiles", fileName);
@@ -18,7 +18,7 @@ exports.verifyFile = async (fileName, fileHash) => {
     return { code: 404, msg: "该文件还未上传", data: [] };
   }
 };
-// 文件上传接口
+// 文件上传处理
 exports.uploadChunk = async (fileHash, chunkIndex, tempPath) => {
   // 根据hash值创建文件夹
   // 如果文件不存在则新建文件夹将切片移入进去
@@ -45,7 +45,7 @@ exports.uploadChunk = async (fileHash, chunkIndex, tempPath) => {
     return { code: 500, msg: "Upload failed", data: false };
   }
 };
-// 文件合并接口
+// 文件合并处理
 exports.mergeChunks = async (chunkHash, fileName, chunksNumber) => {
   const dirPath = path.resolve("uploadsFiles", chunkHash); //目标目录
   const finallyPath = path.resolve("uploadsFiles", fileName);
