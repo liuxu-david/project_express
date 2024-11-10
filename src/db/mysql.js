@@ -1,17 +1,15 @@
-const mysql = require("mysql2");
 const { dbConfig } = require("../config");
+const { Sequelize } = require("sequelize");
 
-const pool = mysql.createPool({
-  host: dbConfig.host,
-  user: dbConfig.user,
-  password: dbConfig.password,
-  database: dbConfig.database,
-  port: dbConfig.port,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+const sequelize = new Sequelize(
+  dbConfig.database,
+  dbConfig.user,
+  dbConfig.password,
+  {
+    host: dbConfig.host,
+    dialect: "mysql",
+    port: dbConfig.port,
+  }
+);
 
-const promisePool = pool.promise(); // 使用Promise简化异步操作
-
-module.exports = promisePool;
+module.exports = sequelize;
