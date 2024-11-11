@@ -3,10 +3,12 @@ const bodyParser = require("body-parser");
 const uploadRoutes = require("./routes/uploadRoutes");
 const userRoutes = require("./routes/usersRoutes");
 const sequelize = require("./db/mysql");
+const morgan = require("./middlewares/logger");
 
 const app = express();
 app.use(bodyParser.json()); // 解析 JSON 格式的请求体
 app.use(bodyParser.urlencoded({ extended: false })); //解析 URL-encoded 格式的请求体
+app.use(morgan);
 
 app.use("/api/upload", uploadRoutes);
 app.use("/api/user", userRoutes);
