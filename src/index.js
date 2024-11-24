@@ -4,6 +4,7 @@ const uploadRoutes = require("./routes/uploadRoutes");
 const userRoutes = require("./routes/usersRoutes");
 const sequelize = require("./db/mysql");
 const morgan = require("./middlewares/logger");
+const { name } = require("./config");
 
 const app = express();
 app.use(bodyParser.json()); // 解析 JSON 格式的请求体
@@ -25,5 +26,5 @@ sequelize
 
 const port = 5000;
 app.listen(port, () => {
-  console.log(`该项目运行在${port}端口上`);
+  console.log(`该项目运行在${port}端口上,环境：${name}`);
 });

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development nodemon ./src/index.js --watch",
+    "start": "cross-env NODE_ENV=development node ./src/index.js --watch",
+    "build": "cross-env NODE_ENV=production node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
